@@ -259,7 +259,6 @@
             <button id="btn-clear" title="Clear Canvas">&#x1F4A3;</button>
             <button id="btn-save" title="Save Image">&#x1F4BE;</button>
             <button id="btn-guide" title="Gesture Guide">&#x2753;</button>
-            <button id="btn-offline" title="Offline App">&#x1F4E5;</button>
         </div>
     </div>
 
@@ -298,21 +297,6 @@
         </ul>
         <br>
         <button id="btn-close-guide" class="btn-primary">Got it!</button>
-    </div>
-
-    <div id="offline-modal" class="modal">
-        <p><strong>&#x1F4F4; Install for Offline Use</strong></p>
-        <p style="font-size:16px; margin: 0 20px 20px 20px;">For the best experience on iPad, install this as a native offline app!</p>
-        <ul style="color:white; text-align:left; display:inline-block; font-size:16px; line-height:2; margin-bottom:20px;">
-            <li><strong>1.</strong> Tap the <strong>Share</strong> icon in Safari.</li>
-            <li><strong>2.</strong> Select <strong>Add to Home Screen</strong>.</li>
-            <li><strong>3.</strong> Open it from your home screen anytime without internet!</li>
-        </ul>
-        <br>
-        <p style="font-size:14px; margin-bottom: 10px;">Or download the raw code file directly:</p>
-        <a id="download-html-link" href="#" style="color:#007aff; text-decoration:none; font-size:16px; background:white; padding:8px 16px; border-radius:8px; display:inline-block; margin-bottom: 20px;">Download HTML File</a>
-        <br>
-        <button id="btn-close-offline" class="btn-primary">Got it!</button>
     </div>
 
     <script>
@@ -375,11 +359,6 @@
         var guideModal = document.getElementById('guide-modal');
         var btnGuide = document.getElementById('btn-guide');
         var btnCloseGuide = document.getElementById('btn-close-guide');
-        
-        var btnOffline = document.getElementById('btn-offline');
-        var offlineModal = document.getElementById('offline-modal');
-        var btnCloseOffline = document.getElementById('btn-close-offline');
-        var downloadHtmlLink = document.getElementById('download-html-link');
 
         var textTargetX = 0, textTargetY = 0;
 
@@ -862,20 +841,6 @@
         // Guide Modal Logic
         btnGuide.addEventListener('click', function() { guideModal.style.display = 'block'; }, false);
         btnCloseGuide.addEventListener('click', function() { guideModal.style.display = 'none'; }, false);
-
-        // Offline / Download Logic
-        btnOffline.addEventListener('click', function() {
-            // Generate a blob of the entire current HTML page for downloading
-            var htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-            var blob = new Blob([htmlContent], {type: "text/html"});
-            var url = window.URL || window.webkitURL;
-            downloadHtmlLink.href = url.createObjectURL(blob);
-            downloadHtmlLink.download = "ipad-whiteboard.html";
-            
-            offlineModal.style.display = 'block';
-        }, false);
-        
-        btnCloseOffline.addEventListener('click', function() { offlineModal.style.display = 'none'; }, false);
 
         btnZen.addEventListener('click', function() {
             toolbar.classList.toggle('hidden');
