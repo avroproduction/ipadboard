@@ -54,9 +54,9 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 56px;
-            height: 56px;
-            font-size: 24px;
+            width: 44px; /* Made smaller */
+            height: 44px; /* Made smaller */
+            font-size: 20px; /* Made smaller */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -70,18 +70,30 @@
         /* Floating toolbar */
         #toolbar {
             position: absolute;
-            bottom: 80px; /* Shifted up to avoid Zen button */
+            bottom: 20px;
             left: 50%;
             -webkit-transform: translateX(-50%);
             transform: translateX(-50%);
             background: rgba(240, 240, 240, 0.95);
-            padding: 10px 15px; /* Made more compact */
-            border-radius: 12px;
+            padding: 8px 10px; /* Made slightly tighter */
+            border-radius: 35px; /* Compact Pill shape */
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            flex-direction: row; /* FORCE SINGLE LINE */
+            flex-wrap: wrap; /* Wrap only if screen is extremely narrow */
+            gap: 6px;
             align-items: center;
             border: 1px solid #ccc;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 50;
+            max-width: 96vw;
+            justify-content: center;
+        }
+
+        /* Vertical Toolbar Mode */
+        #toolbar.vertical {
+            flex-direction: column;
+            border-radius: 24px;
+            width: 76px; /* Restrict width to keep it compact */
         }
 
         .dark-mode #toolbar {
@@ -93,18 +105,43 @@
             display: none; /* Changed from heavy transforms to display:none to save rendering memory */
         }
 
-        .tool-row {
+        /* Drag handle for moving toolbar */
+        #drag-handle {
+            cursor: move;
+            font-size: 24px;
+            color: #888;
+            padding: 0 4px;
+            touch-action: none; /* Prevent scrolling when dragging */
             display: flex;
-            gap: 8px; /* Tighter gap */
             align-items: center;
+        }
+
+        #toolbar.vertical #drag-handle {
+            -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+
+        .tool-group {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        #toolbar.vertical .tool-group {
+            flex-direction: column;
+        }
+
+        #toolbar.vertical #color-palette {
+            flex-direction: row;
             flex-wrap: wrap;
+            width: 68px; /* Forces a 2x3 grid of colors */
             justify-content: center;
         }
 
-        /* Large touch targets for iPad fingers */
+        /* Adjusted touch targets for compact 1-line fit */
         button {
-            padding: 8px 12px; /* Adjusted for icons */
-            font-size: 22px; /* Larger font size for clear icons */
+            padding: 6px; /* Smaller */
+            font-size: 18px; /* Smaller */
             font-weight: normal;
             border: 1px solid #bbb;
             border-radius: 8px;
@@ -112,8 +149,8 @@
             color: #333;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
-            min-width: 44px; /* Minimum touch target size for iOS */
-            min-height: 44px;
+            min-width: 36px; /* Smaller */
+            min-height: 36px; /* Smaller */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -138,10 +175,10 @@
             border-color: #005bb5;
         }
 
-        /* Color Palette */
+        /* Color Palette - slightly smaller to fit 1 line */
         .color-swatch {
-            width: 36px;
-            height: 36px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             border: 2px solid transparent;
             cursor: pointer;
@@ -154,14 +191,21 @@
 
         .divider {
             width: 1px;
-            height: 30px;
+            height: 28px;
             background: #ccc;
-            margin: 0 5px;
+            margin: 0 3px;
         }
+        
+        #toolbar.vertical .divider {
+            width: 40px;
+            height: 1px;
+            margin: 4px 0;
+        }
+        
         .dark-mode .divider { background: #555; }
 
         #thickness {
-            width: 120px;
+            width: 70px; /* Narrower to fit 1 line */
         }
 
         /* Save Modal for old iPads (Tap and hold to save) */
@@ -201,7 +245,8 @@
         @media (max-width: 600px) {
             #toolbar {
                 width: 95%;
-                bottom: 80px;
+                bottom: 10px;
+                padding: 6px;
             }
             #btn-zen {
                 bottom: 15px;
@@ -220,17 +265,23 @@
 
     <!-- Controls -->
     <div id="toolbar">
-        <!-- Row 1: Main Tools (Using Highly Compatible Unicode Icons) -->
-        <div class="tool-row">
+        <!-- Drag Handle to move toolbar -->
+        <div id="drag-handle" title="Drag to move">&#x28FF;</div>
+
+        <!-- Toolbar Orientation Switch Button -->
+        <button id="btn-orient" class="tool-btn" title="Rotate Toolbar">&#x21BB;</button>
+
+        <div class="tool-group">
             <button id="btn-pen" class="tool-btn active" title="Pen">&#x270E;</button>
             <button id="btn-highlighter" class="tool-btn" title="Highlighter">&#x1F58C;</button>
             <button id="btn-eraser" class="tool-btn" title="Eraser">&#x25B1;</button>
-            <div class="divider"></div>
-            <input type="range" id="thickness" min="1" max="30" value="4">
         </div>
 
-        <!-- Row 2: Color Palette -->
-        <div class="tool-row" id="color-palette">
+        <div class="divider"></div>
+        <input type="range" id="thickness" min="1" max="30" value="4">
+        <div class="divider"></div>
+
+        <div class="tool-group" id="color-palette">
             <div class="color-swatch active" style="background-color: #000000;" data-color="#000000"></div>
             <div class="color-swatch" style="background-color: #ff3b30;" data-color="#ff3b30"></div>
             <div class="color-swatch" style="background-color: #ff9500;" data-color="#ff9500"></div>
@@ -239,11 +290,11 @@
             <div class="color-swatch" style="background-color: #ffffff;" data-color="#ffffff"></div>
         </div>
 
-        <!-- Row 3: Actions -->
-        <div class="tool-row">
+        <div class="divider"></div>
+
+        <div class="tool-group">
             <button id="btn-grid" title="Toggle Grid">&#x25A6;</button>
             <button id="btn-dark" title="Dark Mode">&#x25D0;</button>
-            <div class="divider"></div>
             <button id="btn-clear" title="Clear Canvas">&#x1F5D1;</button>
             <button id="btn-save" title="Save Image">&#x1F4BE;</button>
         </div>
@@ -277,12 +328,66 @@
         var btnClear = document.getElementById('btn-clear');
         var btnSave = document.getElementById('btn-save');
         var btnZen = document.getElementById('btn-zen');
+        var btnOrient = document.getElementById('btn-orient');
         var toolbar = document.getElementById('toolbar');
         var sliderThickness = document.getElementById('thickness');
         var saveModal = document.getElementById('save-modal');
         var saveImg = document.getElementById('save-img');
         var btnCloseModal = document.getElementById('close-modal');
         var colorSwatches = document.querySelectorAll('.color-swatch');
+
+        // Toolbar Drag Logic
+        var dragHandle = document.getElementById('drag-handle');
+        var isDraggingToolbar = false;
+        var dragOffsetX = 0;
+        var dragOffsetY = 0;
+
+        function startToolbarDrag(e) {
+            isDraggingToolbar = true;
+            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            var rect = toolbar.getBoundingClientRect();
+            dragOffsetX = clientX - rect.left;
+            dragOffsetY = clientY - rect.top;
+            
+            // Remove centering transform so absolute positioning maps 1:1
+            toolbar.style.transform = 'none';
+            toolbar.style.webkitTransform = 'none';
+            
+            e.preventDefault(); // Stop canvas drawing from triggering
+        }
+
+        function moveToolbar(e) {
+            if (!isDraggingToolbar) return;
+            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            var newLeft = clientX - dragOffsetX;
+            var newTop = clientY - dragOffsetY;
+            
+            // Keep completely on-screen
+            newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - toolbar.offsetWidth));
+            newTop = Math.max(0, Math.min(newTop, window.innerHeight - toolbar.offsetHeight));
+            
+            toolbar.style.left = newLeft + 'px';
+            toolbar.style.top = newTop + 'px';
+            toolbar.style.bottom = 'auto'; // Disable CSS bottom pin
+            
+            e.preventDefault();
+        }
+
+        function stopToolbarDrag() {
+            isDraggingToolbar = false;
+        }
+
+        // Attach drag events safely for iPad
+        dragHandle.addEventListener('mousedown', startToolbarDrag, false);
+        document.addEventListener('mousemove', moveToolbar, {passive: false});
+        document.addEventListener('mouseup', stopToolbarDrag, false);
+
+        dragHandle.addEventListener('touchstart', startToolbarDrag, {passive: false});
+        document.addEventListener('touchmove', moveToolbar, {passive: false});
+        document.addEventListener('touchend', stopToolbarDrag, false);
 
         // Setup Canvas Size and Retina Display Scaling
         function resizeCanvas() {
@@ -448,6 +553,11 @@
         btnGrid.addEventListener('click', function() {
             document.body.classList.toggle('grid-mode');
             btnGrid.className = document.body.classList.contains('grid-mode') ? 'active' : '';
+        }, false);
+
+        // Toolbar Orientation Toggle
+        btnOrient.addEventListener('click', function() {
+            toolbar.classList.toggle('vertical');
         }, false);
 
         // Dark Mode Toggle
