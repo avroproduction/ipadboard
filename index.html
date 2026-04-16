@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Viewport settings specifically prevent pinch-zooming and scrolling on old iPads -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>iPad Digital Whiteboard</title>
+    <style>
+        /* CSS Reset to prevent any scrolling or overflow */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            /* Prevent text selection while drawing */
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        #canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            touch-action: none; /* Prevents modern browsers from handling touch gestures */
+        }
+
+        /* Floating toolbar at the bottom */
+        #toolbar {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+            background: rgba(240, 240, 240, 0.95);
+            padding: 10px 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            border: 1px solid #ccc;
+        }
+
+        /* Large touch targets for iPad fingers */
+        button {
+            padding: 12px 18px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 1px solid #bbb;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #333;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:active {
+            background: #e0e0e0;
+        }
+
+        button.active {
+            background: #007aff; /* iOS Blue */
+            color: white;
+            border-color: #005bb5;
+        }
+
+        .divider {
+            width: 1px;
+            height: 30px;
+            background: #ccc;
+            margin: 0 5px;
+        }
+
+        #thickness {
+            width: 120px;
+        }
+
+        /* Save Modal for old iPads (Tap and hold to save) */
+        #save-modal {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        #save-modal p {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        #save-img {
+            max-width: 90%;
+            max-height: 70%;
+            background: white;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        #close-modal {
+            margin-top: 20px;
+            background: #ff3b30;
+            color: white;
+            border: none;
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 600px) {
+            #toolbar {
+                width: 90%;
+                flex-wrap: wrap;
+                justify-content: center;
+                bottom: 10px;
+            }
+            #thickness {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Drawing Surface -->
+    <canvas id="canvas"></canvas>
+
+    <!-- Controls -->
+    <div id="toolbar">
+        <button id="btn-pen" class="active">Pen</button>
+        <button id="btn-eraser">Eraser</button>
+        
+        <div class="divider"></div>
+        
+        <input type="range" id="thickness" min="1" max="30" value="4">
+        
+        <div class="divider"></div>
+        
+        <button id="btn-clear">Clear</button>
+        <button id="btn-save">Save</button>
+    </div>
+
+    <!-- Modal for saving on old iOS -->
+    <div id="save-modal">
+        <p>Tap and hold the image below to save it.</p>
+        <img id="save-img" alt="Saved Whiteboard">
+        <br>
+        <button id="close-modal">Close</button>
+    </div>
+
+    <script>
+        // Using var instead of let/const for maximum compatibility with iOS 9 Safari (iPad 3)
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        
+        var isDrawing = false;
+        var lastX = 0;
+        var lastY = 0;
+        var currentTool = 'pen'; // 'pen' or 'eraser'
+        
+        // UI Elements
+        var btnPen = document.getElementById('btn-pen');
+        var btnEraser = document.getElementById('btn-eraser');
+        var btnClear = document.getElementById('btn-clear');
+        var btnSave = document.getElementById('btn-save');
+        var sliderThickness = document.getElementById('thickness');
+        var saveModal = document.getElementById('save-modal');
+        var saveImg = document.getElementById('save-img');
+        var btnCloseModal = document.getElementById('close-modal');
+
+        // Setup Canvas Size and Retina Display Scaling
+        function resizeCanvas() {
+            var ratio = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * ratio;
+            canvas.height = window.innerHeight * ratio;
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+            
+            ctx.scale(ratio, ratio);
+            
+            // Set initial white background (important for saving the image)
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            
+            // Default line settings
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+        }
+
+        // Initialize size
+        resizeCanvas();
+        
+        // Handle rotation/resizing
+        window.addEventListener('resize', function() {
+            // Note: resizing clears the canvas on simple implementations. 
+            // For a whiteboard, you usually lock orientation, but we handle it just in case.
+            var tempImageData = canvas.toDataURL();
+            resizeCanvas();
+            var img = new Image();
+            img.onload = function() {
+                var ratio = window.devicePixelRatio || 1;
+                ctx.drawImage(img, 0, 0, window.innerWidth, window.innerHeight);
+            };
+            img.src = tempImageData;
+        }, false);
+
+        // --- Drawing Logic ---
+
+        function getCoordinates(e) {
+            // Check if it's a touch event or mouse event
+            if (e.touches && e.touches.length > 0) {
+                return {
+                    x: e.touches[0].clientX,
+                    y: e.touches[0].clientY
+                };
+            }
+            return { x: e.clientX, y: e.clientY };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            var coords = getCoordinates(e);
+            lastX = coords.x;
+            lastY = coords.y;
+            
+            // Draw a single dot if user just taps
+            ctx.beginPath();
+            ctx.arc(lastX, lastY, sliderThickness.value / 2, 0, Math.PI * 2);
+            ctx.fillStyle = currentTool === 'eraser' ? '#ffffff' : '#000000';
+            ctx.fill();
+            ctx.closePath();
+            
+            e.preventDefault(); // Prevent scrolling on iPad
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            var coords = getCoordinates(e);
+            
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(coords.x, coords.y);
+            
+            ctx.strokeStyle = currentTool === 'eraser' ? '#ffffff' : '#000000';
+            ctx.lineWidth = sliderThickness.value;
+            ctx.stroke();
+            
+            lastX = coords.x;
+            lastY = coords.y;
+            
+            e.preventDefault(); // Prevent scrolling on iPad
+        }
+
+        function stopDrawing(e) {
+            isDrawing = false;
+        }
+
+        // Event Listeners for Touch (iPad)
+        canvas.addEventListener('touchstart', startDrawing, {passive: false});
+        canvas.addEventListener('touchmove', draw, {passive: false});
+        canvas.addEventListener('touchend', stopDrawing, false);
+        canvas.addEventListener('touchcancel', stopDrawing, false);
+
+        // Event Listeners for Mouse (Desktop testing)
+        canvas.addEventListener('mousedown', startDrawing, false);
+        canvas.addEventListener('mousemove', draw, false);
+        canvas.addEventListener('mouseup', stopDrawing, false);
+        canvas.addEventListener('mouseout', stopDrawing, false);
+
+        // --- Toolbar Actions ---
+
+        btnPen.addEventListener('click', function() {
+            currentTool = 'pen';
+            btnPen.className = 'active';
+            btnEraser.className = '';
+        }, false);
+
+        btnEraser.addEventListener('click', function() {
+            currentTool = 'eraser';
+            btnEraser.className = 'active';
+            btnPen.className = '';
+        }, false);
+
+        btnClear.addEventListener('click', function() {
+            if (confirm('Clear the entire whiteboard?')) {
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            }
+        }, false);
+
+        // Old iPad Save Handling
+        btnSave.addEventListener('click', function() {
+            // Generate Image Data
+            var dataURL = canvas.toDataURL('image/jpeg', 0.9);
+            
+            // On older iOS devices, automatic downloading via <a> tag isn't supported.
+            // Best workaround: display the image on screen and let the user tap & hold to save.
+            saveImg.src = dataURL;
+            saveModal.style.display = 'block';
+        }, false);
+
+        btnCloseModal.addEventListener('click', function() {
+            saveModal.style.display = 'none';
+        }, false);
+
+    </script>
+</body>
+</html>
