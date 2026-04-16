@@ -23,235 +23,122 @@
             user-select: none;
         }
 
-        /* Grid Feature */
-        body.grid-mode {
-            background-image: linear-gradient(#e0e0e0 1px, transparent 1px), linear-gradient(90deg, #e0e0e0 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
+        /* --- 14 Background Modes --- */
+        body.grid-mode { background-image: linear-gradient(#e0e0e0 1px, transparent 1px), linear-gradient(90deg, #e0e0e0 1px, transparent 1px); background-size: 40px 40px; }
+        body.lined-mode { background-image: linear-gradient(transparent 95%, #a0c4ff 5%); background-size: 100% 40px; }
+        body.music-mode { background-image: linear-gradient(#000 1px, transparent 1px), linear-gradient(#000 1px, transparent 1px), linear-gradient(#000 1px, transparent 1px), linear-gradient(#000 1px, transparent 1px), linear-gradient(#000 1px, transparent 1px); background-size: 100% 120px; background-position: 0 20px, 0 30px, 0 40px, 0 50px, 0 60px; }
+        
+        /* New Backgrounds */
+        body.dot-grid { background-image: radial-gradient(#cccccc 2px, transparent 2px); background-size: 30px 30px; }
+        body.blueprint { background-color: #00509E; background-image: linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px); background-size: 40px 40px; }
+        body.chalkboard { background-color: #2F4F4F; }
+        body.sepia { background-color: #F4ECD8; }
+        body.graph-paper { background-color: #f8fbff; background-image: linear-gradient(#cce0ff 1px, transparent 1px), linear-gradient(90deg, #cce0ff 1px, transparent 1px); background-size: 20px 20px; }
+        body.handwriting { background-image: linear-gradient(transparent 19px, #ffb3b3 20px, transparent 21px, transparent 39px, #a0c4ff 40px, transparent 41px, transparent 59px, #ffb3b3 60px, transparent 61px); background-size: 100% 80px; }
+        body.storyboard { background-image: linear-gradient(#333 4px, transparent 4px), linear-gradient(90deg, #333 4px, transparent 4px); background-size: 50% 50%; }
+        body.dark-grid { background-color: #111111; background-image: linear-gradient(#333333 1px, transparent 1px), linear-gradient(90deg, #333333 1px, transparent 1px); background-size: 40px 40px; }
+        body.crosshair { background-image: linear-gradient(#ddd 1px, transparent 1px), linear-gradient(90deg, #ddd 1px, transparent 1px); background-size: 100px 100px; background-position: center center; }
+        body.diagonal { background-image: repeating-linear-gradient(45deg, #eee 0, #eee 1px, transparent 1px, transparent 20px); }
+        
+        /* Standard Dark Mode Modifiers */
+        body.dark-mode { background-color: #222222; }
+        body.dark-mode.grid-mode { background-image: linear-gradient(#3a3a3a 1px, transparent 1px), linear-gradient(90deg, #3a3a3a 1px, transparent 1px); }
+        body.dark-mode.lined-mode { background-image: linear-gradient(transparent 95%, #3a3a3a 5%); }
+        body.dark-mode.music-mode { background-image: linear-gradient(#ccc 1px, transparent 1px), linear-gradient(#ccc 1px, transparent 1px), linear-gradient(#ccc 1px, transparent 1px), linear-gradient(#ccc 1px, transparent 1px), linear-gradient(#ccc 1px, transparent 1px); }
+        body.dark-mode.dot-grid { background-image: radial-gradient(#555555 2px, transparent 2px); }
+        body.dark-mode.handwriting { background-image: linear-gradient(transparent 19px, #553333 20px, transparent 21px, transparent 39px, #334466 40px, transparent 41px, transparent 59px, #553333 60px, transparent 61px); }
 
-        /* Dark Mode Blackboard Feature */
-        body.dark-mode {
-            background-color: #222222;
-        }
-        body.dark-mode.grid-mode {
-            background-image: linear-gradient(#3a3a3a 1px, transparent 1px), linear-gradient(90deg, #3a3a3a 1px, transparent 1px);
-        }
+        #canvas { display: block; width: 100%; height: 100%; touch-action: none; background: transparent; }
 
-        #canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-            touch-action: none;
-            background: transparent; /* Canvas is transparent, body shows through */
-        }
-
-        /* Zen Mode Button (Now a compact floating circular icon) */
+        /* Zen Mode Button */
         #btn-zen {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 122, 255, 0.7); /* Slightly transparent so it doesn't block view */
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 44px; /* Made smaller */
-            height: 44px; /* Made smaller */
-            font-size: 20px; /* Made smaller */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: absolute; bottom: 20px; right: 20px;
+            background: rgba(0, 122, 255, 0.7); color: white;
+            border: none; border-radius: 50%;
+            width: 44px; height: 44px; font-size: 20px;
+            display: flex; align-items: center; justify-content: center;
             z-index: 100;
         }
-        
-        #btn-zen:active {
-            background: rgba(0, 122, 255, 1);
-        }
+        #btn-zen:active { background: rgba(0, 122, 255, 1); }
 
         /* Floating toolbar */
         #toolbar {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            -webkit-transform: translateX(-50%);
-            transform: translateX(-50%);
+            position: absolute; bottom: 20px; left: 50%;
+            -webkit-transform: translateX(-50%); transform: translateX(-50%);
             background: rgba(240, 240, 240, 0.95);
-            padding: 8px 10px; /* Made slightly tighter */
-            border-radius: 35px; /* Compact Pill shape */
-            display: flex;
-            flex-direction: row; /* FORCE SINGLE LINE */
-            flex-wrap: wrap; /* Wrap only if screen is extremely narrow */
-            gap: 6px;
-            align-items: center;
-            border: 1px solid #ccc;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 50;
-            max-width: 96vw;
-            justify-content: center;
+            padding: 8px 10px; border-radius: 35px;
+            display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: center;
+            border: 1px solid #ccc; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 50; max-width: 96vw;
+            /* Responsiveness Constraints */
+            max-height: 85vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
         }
 
-        /* Vertical Toolbar Mode */
+        /* Vertical Toolbar Mode (Fixed Responsiveness) */
         #toolbar.vertical {
-            flex-direction: column;
-            border-radius: 24px;
-            width: 76px; /* Restrict width to keep it compact */
+            flex-direction: column; border-radius: 24px;
+            width: 76px; height: auto;
+            max-height: 85vh; /* Prevents going off screen */
+            overflow-y: auto; overflow-x: hidden;
+            padding: 15px 5px; /* Better spacing for scrolling */
         }
+        
+        /* Hide scrollbars for a cleaner look but keep scrollability */
+        #toolbar::-webkit-scrollbar { width: 0px; background: transparent; }
 
-        .dark-mode #toolbar {
-            background: rgba(40, 40, 40, 0.95);
-            border-color: #555;
-        }
-
-        #toolbar.hidden {
-            display: none; /* Changed from heavy transforms to display:none to save rendering memory */
-        }
+        .dark-mode #toolbar { background: rgba(40, 40, 40, 0.95); border-color: #555; }
+        #toolbar.hidden { display: none; }
 
         /* Drag handle for moving toolbar */
-        #drag-handle {
-            cursor: move;
-            font-size: 24px;
-            color: #888;
-            padding: 0 4px;
-            touch-action: none; /* Prevent scrolling when dragging */
-            display: flex;
-            align-items: center;
-        }
+        #drag-handle { cursor: move; font-size: 24px; color: #888; padding: 0 4px; touch-action: none; display: flex; align-items: center; }
+        #toolbar.vertical #drag-handle { -webkit-transform: rotate(90deg); transform: rotate(90deg); margin-bottom: 10px; }
 
-        #toolbar.vertical #drag-handle {
-            -webkit-transform: rotate(90deg);
-            transform: rotate(90deg);
-        }
-
-        .tool-group {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-        }
-
-        #toolbar.vertical .tool-group {
-            flex-direction: column;
-        }
-
-        #toolbar.vertical #color-palette {
-            flex-direction: row;
-            flex-wrap: wrap;
-            width: 68px; /* Forces a 2x3 grid of colors */
-            justify-content: center;
-        }
+        .tool-group { display: flex; gap: 4px; align-items: center; }
+        #toolbar.vertical .tool-group { flex-direction: column; }
 
         /* Adjusted touch targets for compact 1-line fit */
         button {
-            padding: 6px; /* Smaller */
-            font-size: 18px; /* Smaller */
-            font-weight: normal;
-            border: 1px solid #bbb;
-            border-radius: 8px;
-            background: #ffffff;
-            color: #333;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-            min-width: 36px; /* Smaller */
-            min-height: 36px; /* Smaller */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 6px; font-size: 18px; font-weight: normal; border: 1px solid #bbb; border-radius: 8px;
+            background: #ffffff; color: #333; cursor: pointer; -webkit-tap-highlight-color: transparent;
+            min-width: 36px; min-height: 36px; display: flex; align-items: center; justify-content: center;
         }
+        .dark-mode button { background: #333; color: #fff; border-color: #555; }
+        button:active { background: #e0e0e0; }
+        .dark-mode button:active { background: #555; }
+        button.active { background: #007aff; color: white; border-color: #005bb5; }
 
-        .dark-mode button {
-            background: #333;
-            color: #fff;
-            border-color: #555;
+        /* Native lightweight dropdowns */
+        .native-select {
+            padding: 4px 6px; font-size: 16px; border: 1px solid #bbb; border-radius: 8px;
+            background: #ffffff; color: #333; height: 36px; cursor: pointer; outline: none; max-width: 130px;
         }
+        .dark-mode .native-select { background: #333; color: #fff; border-color: #555; }
+        #toolbar.vertical .native-select { width: 64px; padding: 4px 2px; text-overflow: ellipsis; }
 
-        button:active {
-            background: #e0e0e0;
-        }
-        .dark-mode button:active {
-            background: #555;
-        }
-
-        button.active {
-            background: #007aff;
-            color: white;
-            border-color: #005bb5;
-        }
-
-        /* Color Palette - slightly smaller to fit 1 line */
-        .color-swatch {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            cursor: pointer;
-        }
-        .color-swatch.active {
-            border-color: #007aff;
-            -webkit-transform: scale(1.1);
-            transform: scale(1.1);
-        }
-
-        .divider {
-            width: 1px;
-            height: 28px;
-            background: #ccc;
-            margin: 0 3px;
-        }
-        
-        #toolbar.vertical .divider {
-            width: 40px;
-            height: 1px;
-            margin: 4px 0;
-        }
-        
+        .divider { width: 1px; height: 28px; background: #ccc; margin: 0 3px; }
+        #toolbar.vertical .divider { width: 40px; height: 1px; margin: 4px 0; flex-shrink: 0; }
         .dark-mode .divider { background: #555; }
 
-        #thickness {
-            width: 70px; /* Narrower to fit 1 line */
-        }
+        #thickness { width: 70px; flex-shrink: 0; }
+        #toolbar.vertical #thickness { margin: 10px 0; }
 
-        /* Save Modal for old iPads (Tap and hold to save) */
-        #save-modal {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            text-align: center;
-            padding-top: 50px;
+        /* Modals (Save, Confirm, Text) */
+        .modal {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1000; text-align: center; padding-top: 50px;
         }
-
-        #save-modal p {
-            color: white;
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        #save-img {
-            max-width: 90%;
-            max-height: 70%;
-            background: white;
-            border: 2px solid #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        #close-modal {
-            margin-top: 20px;
-            background: #ff3b30;
-            color: white;
-            border: none;
-        }
+        .modal p { color: white; font-size: 18px; margin-bottom: 20px; }
+        .modal button { margin: 10px; padding: 10px 20px; border: none; font-size: 16px; border-radius: 8px; cursor: pointer; }
+        .btn-primary { background: #007aff; color: white; }
+        .btn-danger { background: #ff3b30; color: white; }
+        .btn-secondary { background: #555; color: white; }
+        
+        #save-img { max-width: 90%; max-height: 70%; background: white; border: 2px solid #fff; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5); display: inline-block; }
 
         /* Mobile specific adjustments */
         @media (max-width: 600px) {
-            #toolbar {
-                width: 95%;
-                bottom: 10px;
-                padding: 6px;
-            }
-            #btn-zen {
-                bottom: 15px;
-                right: 15px;
-            }
+            #toolbar { width: 95%; bottom: 10px; padding: 6px; }
+            #btn-zen { bottom: 15px; right: 15px; }
         }
     </style>
 </head>
@@ -260,70 +147,174 @@
     <!-- Main Drawing Surface -->
     <canvas id="canvas"></canvas>
 
-    <!-- Zen Mode Toggle (Circular Icon) -->
+    <!-- Overlay Canvas for Preview Tools (Ruler, Shapes, Laser) -->
+    <canvas id="overlay-canvas" style="pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+
+    <!-- Zen Mode Toggle -->
     <button id="btn-zen" title="Toggle Toolbar">&#x1F441;</button>
 
     <!-- Controls -->
     <div id="toolbar">
-        <!-- Drag Handle to move toolbar -->
         <div id="drag-handle" title="Drag to move">&#x28FF;</div>
 
-        <!-- Toolbar Orientation Switch Button -->
         <button id="btn-orient" class="tool-btn" title="Rotate Toolbar">&#x21BB;</button>
 
         <div class="tool-group">
-            <button id="btn-pen" class="tool-btn active" title="Pen">&#x270E;</button>
-            <button id="btn-highlighter" class="tool-btn" title="Highlighter">&#x1F58C;</button>
-            <button id="btn-eraser" class="tool-btn" title="Eraser">&#x25B1;</button>
+            <!-- 17 Tools Total -->
+            <select id="tool-select" class="native-select">
+                <option value="pen">&#x270E; Pen</option>
+                <option value="highlighter">&#x1F58C; Highlight</option>
+                <option value="eraser">&#x25B1; Eraser</option>
+                <option value="laser">&#x1F534; Laser</option>
+                <option value="ruler">&#x1F4CF; Ruler</option>
+                <option value="dashed">&#x2506; Dashed Line</option>
+                <option value="dotted">&#x250A; Dotted Line</option>
+                <option value="arrow">&#x2197; Arrow</option>
+                <option value="rect">&#x25A1; Rectangle</option>
+                <option value="circle">&#x25CB; Circle</option>
+                <option value="triangle">&#x25B3; Triangle</option>
+                <option value="rainbow">&#x1F308; Rainbow</option>
+                <option value="spray">&#x1F3DE; Spray Can</option>
+                <option value="chalk">&#x270E; Chalk</option>
+                <option value="shadow">&#x25D3; Shadow Pen</option>
+                <option value="calig">&#x2712; Calig Brush</option>
+                <option value="text">&#x1F524; Typewriter</option>
+            </select>
         </div>
 
         <div class="divider"></div>
         <input type="range" id="thickness" min="1" max="30" value="4">
         <div class="divider"></div>
 
-        <div class="tool-group" id="color-palette">
-            <div class="color-swatch active" style="background-color: #000000;" data-color="#000000"></div>
-            <div class="color-swatch" style="background-color: #ff3b30;" data-color="#ff3b30"></div>
-            <div class="color-swatch" style="background-color: #ff9500;" data-color="#ff9500"></div>
-            <div class="color-swatch" style="background-color: #4cd964;" data-color="#4cd964"></div>
-            <div class="color-swatch" style="background-color: #007aff;" data-color="#007aff"></div>
-            <div class="color-swatch" style="background-color: #ffffff;" data-color="#ffffff"></div>
+        <div class="tool-group">
+            <!-- 33 Colors Total (Strict 6-char hex codes for accurate highlight calc) -->
+            <select id="color-select" class="native-select">
+                <option value="#000000">Black</option>
+                <option value="#333333">Dark Gray</option>
+                <option value="#888888">Gray</option>
+                <option value="#cccccc">Light Gray</option>
+                <option value="#ffffff">White</option>
+                
+                <option value="#ff3b30">Red</option>
+                <option value="#dc143c">Crimson</option>
+                <option value="#8b0000">Dark Red</option>
+                
+                <option value="#ff2d55">Pink</option>
+                <option value="#ff69b4">Hot Pink</option>
+                <option value="#ff00ff">Magenta</option>
+                
+                <option value="#8e44ad">Dark Purple</option>
+                <option value="#5856d6">Purple</option>
+                <option value="#4b0082">Indigo</option>
+                
+                <option value="#000080">Navy</option>
+                <option value="#007aff">Blue</option>
+                <option value="#4169e1">Royal Blue</option>
+                <option value="#5ac8fa">Light Blue</option>
+                <option value="#00ffff">Cyan</option>
+                
+                <option value="#008080">Teal</option>
+                <option value="#4cd964">Green</option>
+                <option value="#32cd32">Lime Green</option>
+                <option value="#006400">Dark Green</option>
+                <option value="#808000">Olive</option>
+                
+                <option value="#ffcc00">Yellow</option>
+                <option value="#ffd700">Gold</option>
+                
+                <option value="#ff9500">Orange</option>
+                <option value="#ff8c00">Dark Orange</option>
+                <option value="#ff7f50">Coral</option>
+                <option value="#ffdab9">Peach</option>
+                
+                <option value="#a2845e">Brown</option>
+                <option value="#8b4513">Saddle Brown</option>
+                <option value="#800000">Maroon</option>
+            </select>
         </div>
 
         <div class="divider"></div>
 
         <div class="tool-group">
-            <button id="btn-grid" title="Toggle Grid">&#x25A6;</button>
+            <!-- 14 Backgrounds Total -->
+            <select id="bg-select" class="native-select">
+                <option value="">&#x2B1C; Blank BG</option>
+                <option value="grid-mode">&#x25A6; Grid Mode</option>
+                <option value="lined-mode">&#x1F4DD; Lined Paper</option>
+                <option value="music-mode">&#x1F3BC; Music Staves</option>
+                <option value="dot-grid">&#x28FF; Dot Grid</option>
+                <option value="blueprint">&#x1F4D8; Blueprint</option>
+                <option value="chalkboard">&#x1F5FF; Chalkboard</option>
+                <option value="sepia">&#x1F4DC; Sepia</option>
+                <option value="graph-paper">&#x1F4CA; Graph Paper</option>
+                <option value="handwriting">&#x270D; Handwriting</option>
+                <option value="storyboard">&#x1F5BD; Storyboard</option>
+                <option value="dark-grid">&#x25A3; Dark Grid</option>
+                <option value="crosshair">&#x271B; Crosshairs</option>
+                <option value="diagonal">&#x25E2; Diagonal</option>
+            </select>
+            
+            <button id="btn-lock" title="Lock Canvas">&#x1F512;</button>
+            <button id="btn-autohide" title="Auto-Hide Toolbar">&#x1F47B;</button>
+            <button id="btn-mirror" title="Mirror Symmetry">&#x1F98B;</button>
             <button id="btn-dark" title="Dark Mode">&#x25D0;</button>
             <button id="btn-clear" title="Clear Canvas">&#x1F5D1;</button>
             <button id="btn-save" title="Save Image">&#x1F4BE;</button>
         </div>
     </div>
 
-    <!-- Modal for saving on old iOS -->
-    <div id="save-modal">
+    <!-- Modals for saving, confirming, and text input -->
+    <div id="save-modal" class="modal">
         <p>Tap and hold the image below to save it.</p>
         <img id="save-img" alt="Saved Whiteboard">
         <br>
-        <button id="close-modal">Close</button>
+        <button id="close-modal" class="btn-danger">Close</button>
+    </div>
+
+    <div id="confirm-modal" class="modal">
+        <p>Clear the entire whiteboard?</p>
+        <button id="btn-confirm-yes" class="btn-danger">Yes, Clear</button>
+        <button id="btn-confirm-no" class="btn-secondary">Cancel</button>
+    </div>
+
+    <div id="text-modal" class="modal">
+        <p>Enter text to stamp:</p>
+        <input type="text" id="text-input" style="padding:10px; font-size:16px; width:80%; max-width:300px; border-radius:8px; border:none; margin-bottom:20px; outline:none;">
+        <br>
+        <button id="btn-text-ok" class="btn-primary">OK</button>
+        <button id="btn-text-cancel" class="btn-secondary">Cancel</button>
     </div>
 
     <script>
         // Using var instead of let/const for maximum compatibility with iOS 9 Safari (iPad 3)
         var canvas = document.getElementById('canvas');
         var ctx = canvas.getContext('2d');
+        var oCanvas = document.getElementById('overlay-canvas');
+        var oCtx = oCanvas.getContext('2d');
         
         var isDrawing = false;
-        var lastX = 0;
-        var lastY = 0;
-        var currentTool = 'pen'; // 'pen', 'highlighter', or 'eraser'
-        var strokeColor = '#000000'; // Default black
+        var lastX = 0, lastY = 0;
+        var startX = 0, startY = 0;
+        var currentTool = 'pen';
+        var strokeColor = '#000000';
+        
+        var rainbowHue = 0; // For rainbow brush
+
+        // Features state
+        var isLocked = false;
+        var isAutoHide = false;
+        var isMirror = false;
+        var currentBg = ''; 
+        var laserTimer = null;
 
         // UI Elements
-        var btnPen = document.getElementById('btn-pen');
-        var btnHighlighter = document.getElementById('btn-highlighter');
-        var btnEraser = document.getElementById('btn-eraser');
-        var btnGrid = document.getElementById('btn-grid');
+        var toolSelect = document.getElementById('tool-select');
+        var bgSelect = document.getElementById('bg-select');
+        var colorSelect = document.getElementById('color-select');
+        
+        var btnLock = document.getElementById('btn-lock');
+        var btnAutoHide = document.getElementById('btn-autohide');
+        var btnMirror = document.getElementById('btn-mirror');
         var btnDark = document.getElementById('btn-dark');
         var btnClear = document.getElementById('btn-clear');
         var btnSave = document.getElementById('btn-save');
@@ -331,16 +322,25 @@
         var btnOrient = document.getElementById('btn-orient');
         var toolbar = document.getElementById('toolbar');
         var sliderThickness = document.getElementById('thickness');
+        
+        // Modal Elements
         var saveModal = document.getElementById('save-modal');
         var saveImg = document.getElementById('save-img');
         var btnCloseModal = document.getElementById('close-modal');
-        var colorSwatches = document.querySelectorAll('.color-swatch');
+        var confirmModal = document.getElementById('confirm-modal');
+        var btnConfirmYes = document.getElementById('btn-confirm-yes');
+        var btnConfirmNo = document.getElementById('btn-confirm-no');
+        var textModal = document.getElementById('text-modal');
+        var textInput = document.getElementById('text-input');
+        var btnTextOk = document.getElementById('btn-text-ok');
+        var btnTextCancel = document.getElementById('btn-text-cancel');
+
+        var textTargetX = 0, textTargetY = 0;
 
         // Toolbar Drag Logic
         var dragHandle = document.getElementById('drag-handle');
         var isDraggingToolbar = false;
-        var dragOffsetX = 0;
-        var dragOffsetY = 0;
+        var dragOffsetX = 0, dragOffsetY = 0;
 
         function startToolbarDrag(e) {
             isDraggingToolbar = true;
@@ -350,11 +350,9 @@
             dragOffsetX = clientX - rect.left;
             dragOffsetY = clientY - rect.top;
             
-            // Remove centering transform so absolute positioning maps 1:1
             toolbar.style.transform = 'none';
             toolbar.style.webkitTransform = 'none';
-            
-            e.preventDefault(); // Stop canvas drawing from triggering
+            e.preventDefault(); 
         }
 
         function moveToolbar(e) {
@@ -365,31 +363,24 @@
             var newLeft = clientX - dragOffsetX;
             var newTop = clientY - dragOffsetY;
             
-            // Keep completely on-screen
             newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - toolbar.offsetWidth));
             newTop = Math.max(0, Math.min(newTop, window.innerHeight - toolbar.offsetHeight));
             
             toolbar.style.left = newLeft + 'px';
             toolbar.style.top = newTop + 'px';
-            toolbar.style.bottom = 'auto'; // Disable CSS bottom pin
-            
+            toolbar.style.bottom = 'auto'; 
             e.preventDefault();
         }
 
-        function stopToolbarDrag() {
-            isDraggingToolbar = false;
-        }
+        function stopToolbarDrag() { isDraggingToolbar = false; }
 
-        // Attach drag events safely for iPad
         dragHandle.addEventListener('mousedown', startToolbarDrag, false);
         document.addEventListener('mousemove', moveToolbar, {passive: false});
         document.addEventListener('mouseup', stopToolbarDrag, false);
-
         dragHandle.addEventListener('touchstart', startToolbarDrag, {passive: false});
         document.addEventListener('touchmove', moveToolbar, {passive: false});
         document.addEventListener('touchend', stopToolbarDrag, false);
 
-        // Setup Canvas Size and Retina Display Scaling
         function resizeCanvas() {
             var ratio = window.devicePixelRatio || 1;
             canvas.width = window.innerWidth * ratio;
@@ -397,27 +388,39 @@
             canvas.style.width = window.innerWidth + 'px';
             canvas.style.height = window.innerHeight + 'px';
             
+            oCanvas.width = canvas.width;
+            oCanvas.height = canvas.height;
+            oCanvas.style.width = canvas.style.width;
+            oCanvas.style.height = canvas.style.height;
+
             ctx.scale(ratio, ratio);
+            oCtx.scale(ratio, ratio);
             
-            // Canvas remains transparent so body background (grid/dark) shows through
             ctx.lineJoin = 'round';
             ctx.lineCap = 'round';
+            oCtx.lineJoin = 'round';
+            oCtx.lineCap = 'round';
         }
 
-        // Initialize size
         resizeCanvas();
         
-        // Handle rotation/resizing
         window.addEventListener('resize', function() {
-            // Lightweight canvas copy instead of heavy base64 toDataURL strings
             var tempCanvas = document.createElement('canvas');
             tempCanvas.width = canvas.width;
             tempCanvas.height = canvas.height;
             tempCanvas.getContext('2d').drawImage(canvas, 0, 0);
-            
             resizeCanvas();
             ctx.drawImage(tempCanvas, 0, 0);
         }, false);
+
+        // Accurate Hex to RGBA conversion for iOS 9
+        function getHighlighterColor(hex) {
+            // Extracts exact RGB values out of strict #RRGGBB format
+            var r = parseInt(hex.substring(1, 3), 16);
+            var g = parseInt(hex.substring(3, 5), 16);
+            var b = parseInt(hex.substring(5, 7), 16);
+            return 'rgba(' + r + ',' + g + ',' + b + ', 0.3)';
+        }
 
         // --- Drawing Logic ---
 
@@ -428,23 +431,67 @@
             return { x: e.clientX, y: e.clientY };
         }
 
+        function clearContextSettings(context) {
+            context.shadowBlur = 0;
+            context.shadowColor = 'transparent';
+            if (context.setLineDash) context.setLineDash([]);
+        }
+
         function startDrawing(e) {
+            if (e.touches && e.touches.length === 2) {
+                currentTool = (currentTool === 'eraser') ? 'pen' : 'eraser';
+                toolSelect.value = currentTool;
+                e.preventDefault();
+                return;
+            }
+
+            if (isLocked) return;
+            if (isAutoHide) toolbar.classList.add('hidden');
+
             isDrawing = true;
             var coords = getCoordinates(e);
-            lastX = coords.x;
-            lastY = coords.y;
+            lastX = coords.x; lastY = coords.y;
+            startX = coords.x; startY = coords.y;
             
+            if (currentTool === 'text') {
+                textTargetX = coords.x;
+                textTargetY = coords.y;
+                textModal.style.display = 'block';
+                textInput.value = '';
+                textInput.focus();
+                isDrawing = false;
+                e.preventDefault();
+                return;
+            }
+
+            // Preview tools reset overlay
+            if (['laser', 'ruler', 'dashed', 'dotted', 'arrow', 'rect', 'circle', 'triangle'].indexOf(currentTool) > -1) {
+                if (laserTimer) clearTimeout(laserTimer);
+                oCtx.clearRect(0, 0, oCanvas.width, oCanvas.height);
+                e.preventDefault();
+                return;
+            }
+            
+            clearContextSettings(ctx);
             ctx.beginPath();
-            ctx.arc(lastX, lastY, sliderThickness.value / 2, 0, Math.PI * 2);
             
-            // Handle tool types
+            // Initial Dot
+            if (currentTool !== 'calig' && currentTool !== 'spray' && currentTool !== 'shadow') {
+                ctx.arc(lastX, lastY, sliderThickness.value / 2, 0, Math.PI * 2);
+            }
+            
             if (currentTool === 'eraser') {
                 ctx.globalCompositeOperation = 'destination-out';
                 ctx.fillStyle = 'rgba(0,0,0,1)';
             } else if (currentTool === 'highlighter') {
                 ctx.globalCompositeOperation = 'source-over';
-                // Convert hex to rgba for highlighter opacity
                 ctx.fillStyle = getHighlighterColor(strokeColor);
+            } else if (currentTool === 'rainbow') {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.fillStyle = 'hsl(' + rainbowHue + ', 100%, 50%)';
+            } else if (currentTool === 'chalk') {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.fillStyle = getHighlighterColor(strokeColor); // Use semi-transparent for chalk feel
             } else {
                 ctx.globalCompositeOperation = 'source-over';
                 ctx.fillStyle = strokeColor;
@@ -455,159 +502,290 @@
             e.preventDefault();
         }
 
+        function drawPreviewShape(context, tool, sx, sy, ex, ey, thick, color) {
+            clearContextSettings(context);
+            context.beginPath();
+            context.strokeStyle = color;
+            context.lineWidth = thick;
+            context.globalCompositeOperation = 'source-over';
+
+            if (tool === 'ruler') {
+                context.moveTo(sx, sy); context.lineTo(ex, ey);
+            } else if (tool === 'dashed') {
+                if(context.setLineDash) context.setLineDash([thick * 3, thick * 3]);
+                context.moveTo(sx, sy); context.lineTo(ex, ey);
+            } else if (tool === 'dotted') {
+                if(context.setLineDash) context.setLineDash([thick, thick * 2]);
+                context.moveTo(sx, sy); context.lineTo(ex, ey);
+            } else if (tool === 'arrow') {
+                context.moveTo(sx, sy); context.lineTo(ex, ey);
+                var angle = Math.atan2(ey - sy, ex - sx);
+                var headlen = thick * 4;
+                context.lineTo(ex - headlen * Math.cos(angle - Math.PI / 6), ey - headlen * Math.sin(angle - Math.PI / 6));
+                context.moveTo(ex, ey);
+                context.lineTo(ex - headlen * Math.cos(angle + Math.PI / 6), ey - headlen * Math.sin(angle + Math.PI / 6));
+            } else if (tool === 'rect') {
+                context.rect(Math.min(sx, ex), Math.min(sy, ey), Math.abs(ex - sx), Math.abs(ey - sy));
+            } else if (tool === 'circle') {
+                var radius = Math.sqrt(Math.pow(ex - sx, 2) + Math.pow(ey - sy, 2));
+                context.arc(sx, sy, radius, 0, 2 * Math.PI);
+            } else if (tool === 'triangle') {
+                context.moveTo(sx, ey);
+                context.lineTo(sx + (ex - sx) / 2, sy);
+                context.lineTo(ex, ey);
+                context.closePath();
+            }
+            context.stroke();
+        }
+
         function draw(e) {
-            if (!isDrawing) return;
+            if (!isDrawing || isLocked) return;
             var coords = getCoordinates(e);
             
+            // Handle Overlay/Preview Tools
+            if (['laser', 'ruler', 'dashed', 'dotted', 'arrow', 'rect', 'circle', 'triangle'].indexOf(currentTool) > -1) {
+                oCtx.clearRect(0, 0, oCanvas.width, oCanvas.height);
+                if (currentTool === 'laser') {
+                    oCtx.beginPath();
+                    oCtx.moveTo(lastX, lastY); oCtx.lineTo(coords.x, coords.y);
+                    oCtx.strokeStyle = 'red'; oCtx.lineWidth = 4;
+                    oCtx.shadowBlur = 10; oCtx.shadowColor = 'red';
+                    oCtx.stroke();
+                    lastX = coords.x; lastY = coords.y;
+                } else {
+                    drawPreviewShape(oCtx, currentTool, startX, startY, coords.x, coords.y, sliderThickness.value, strokeColor);
+                }
+                e.preventDefault();
+                return;
+            }
+
+            clearContextSettings(ctx);
             ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-            ctx.lineTo(coords.x, coords.y);
             
+            // Continuous brushing tools
+            if (currentTool === 'calig') {
+                ctx.moveTo(lastX - 2, lastY + 2); ctx.lineTo(coords.x - 2, coords.y + 2);
+                ctx.lineWidth = sliderThickness.value * 1.5;
+            } else if (currentTool === 'spray') {
+                for (var i = 0; i < 10; i++) {
+                    var offsetX = (Math.random() - 0.5) * sliderThickness.value * 3;
+                    var offsetY = (Math.random() - 0.5) * sliderThickness.value * 3;
+                    ctx.fillStyle = strokeColor;
+                    ctx.fillRect(coords.x + offsetX, coords.y + offsetY, 2, 2);
+                }
+                lastX = coords.x; lastY = coords.y;
+                e.preventDefault();
+                return;
+            } else if (currentTool === 'shadow') {
+                ctx.moveTo(lastX, lastY); ctx.lineTo(coords.x, coords.y);
+                ctx.lineWidth = sliderThickness.value;
+                ctx.shadowColor = strokeColor;
+                ctx.shadowBlur = sliderThickness.value * 2;
+            } else {
+                ctx.moveTo(lastX, lastY); ctx.lineTo(coords.x, coords.y);
+                ctx.lineWidth = sliderThickness.value;
+            }
+            
+            // Assign active styles
             if (currentTool === 'eraser') {
                 ctx.globalCompositeOperation = 'destination-out';
                 ctx.strokeStyle = 'rgba(0,0,0,1)';
             } else if (currentTool === 'highlighter') {
                 ctx.globalCompositeOperation = 'source-over';
                 ctx.strokeStyle = getHighlighterColor(strokeColor);
+            } else if (currentTool === 'rainbow') {
+                rainbowHue = (rainbowHue + 3) % 360;
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = 'hsl(' + rainbowHue + ', 100%, 50%)';
+            } else if (currentTool === 'chalk') {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = getHighlighterColor(strokeColor);
+                // Chalk adds random roughness
+                ctx.moveTo(lastX + Math.random()*2, lastY + Math.random()*2);
             } else {
                 ctx.globalCompositeOperation = 'source-over';
                 ctx.strokeStyle = strokeColor;
             }
 
-            ctx.lineWidth = sliderThickness.value;
             ctx.stroke();
+
+            // Mirror Symmetry
+            if (isMirror && currentTool !== 'eraser' && currentTool !== 'highlighter') {
+                ctx.beginPath();
+                ctx.moveTo(window.innerWidth - lastX, lastY);
+                ctx.lineTo(window.innerWidth - coords.x, coords.y);
+                ctx.stroke();
+            }
             
-            lastX = coords.x;
-            lastY = coords.y;
+            lastX = coords.x; lastY = coords.y;
             e.preventDefault();
         }
 
         function stopDrawing(e) {
+            if (!isDrawing || isLocked) return;
+            
+            if (['ruler', 'dashed', 'dotted', 'arrow', 'rect', 'circle', 'triangle'].indexOf(currentTool) > -1) {
+                var touch = e.changedTouches ? e.changedTouches[0] : e;
+                var endX = touch.clientX || lastX;
+                var endY = touch.clientY || lastY;
+                
+                oCtx.clearRect(0, 0, oCanvas.width, oCanvas.height);
+                drawPreviewShape(ctx, currentTool, startX, startY, endX, endY, sliderThickness.value, strokeColor);
+                
+                if (isMirror) {
+                    drawPreviewShape(ctx, currentTool, window.innerWidth - startX, startY, window.innerWidth - endX, endY, sliderThickness.value, strokeColor);
+                }
+            } else if (currentTool === 'laser') {
+                laserTimer = setTimeout(function() {
+                    oCtx.clearRect(0, 0, oCanvas.width, oCanvas.height);
+                }, 1500);
+            }
+            
             isDrawing = false;
+            if (isAutoHide) toolbar.classList.remove('hidden');
         }
 
-        function getHighlighterColor(hex) {
-            // Very simple hex to rgba conversion for iPad 3
-            var r = parseInt(hex.slice(1, 3), 16) || 255;
-            var g = parseInt(hex.slice(3, 5), 16) || 255;
-            var b = parseInt(hex.slice(5, 7), 16) || 0;
-            return 'rgba(' + r + ',' + g + ',' + b + ', 0.3)';
-        }
-
-        // Event Listeners for Touch (iPad)
+        // Event Listeners for Touch & Mouse
         canvas.addEventListener('touchstart', startDrawing, {passive: false});
         canvas.addEventListener('touchmove', draw, {passive: false});
         canvas.addEventListener('touchend', stopDrawing, false);
         canvas.addEventListener('touchcancel', stopDrawing, false);
 
-        // Event Listeners for Mouse (Desktop testing)
         canvas.addEventListener('mousedown', startDrawing, false);
         canvas.addEventListener('mousemove', draw, false);
         canvas.addEventListener('mouseup', stopDrawing, false);
         canvas.addEventListener('mouseout', stopDrawing, false);
 
         // --- Toolbar Actions ---
-        
-        function updateToolButtons(activeBtn) {
-            btnPen.className = 'tool-btn';
-            btnHighlighter.className = 'tool-btn';
-            btnEraser.className = 'tool-btn';
-            activeBtn.className = 'tool-btn active';
-        }
+        toolSelect.addEventListener('change', function() { currentTool = this.value; }, false);
 
-        btnPen.addEventListener('click', function() {
-            currentTool = 'pen';
-            updateToolButtons(btnPen);
+        bgSelect.addEventListener('change', function() {
+            if (currentBg) document.body.classList.remove(currentBg);
+            currentBg = this.value;
+            if (currentBg) document.body.classList.add(currentBg);
         }, false);
 
-        btnHighlighter.addEventListener('click', function() {
-            currentTool = 'highlighter';
-            updateToolButtons(btnHighlighter);
-        }, false);
-
-        btnEraser.addEventListener('click', function() {
-            currentTool = 'eraser';
-            updateToolButtons(btnEraser);
-        }, false);
-
-        // Colors
-        for (var i = 0; i < colorSwatches.length; i++) {
-            colorSwatches[i].addEventListener('click', function(e) {
-                // Remove active from all
-                for (var j = 0; j < colorSwatches.length; j++) {
-                    colorSwatches[j].className = 'color-swatch';
-                }
-                // Add active to clicked
-                e.target.className = 'color-swatch active';
-                strokeColor = e.target.getAttribute('data-color');
-                
-                // Switch to pen automatically if color is picked
-                if (currentTool === 'eraser') {
-                    currentTool = 'pen';
-                    updateToolButtons(btnPen);
-                }
-            }, false);
-        }
-
-        // Grid Toggle
-        btnGrid.addEventListener('click', function() {
-            document.body.classList.toggle('grid-mode');
-            btnGrid.className = document.body.classList.contains('grid-mode') ? 'active' : '';
-        }, false);
-
-        // Toolbar Orientation Toggle
-        btnOrient.addEventListener('click', function() {
-            toolbar.classList.toggle('vertical');
-        }, false);
-
-        // Dark Mode Toggle
-        btnDark.addEventListener('click', function() {
-            document.body.classList.toggle('dark-mode');
-            btnDark.className = document.body.classList.contains('dark-mode') ? 'active' : '';
-        }, false);
-
-        // Clear
-        btnClear.addEventListener('click', function() {
-            if (confirm('Clear the entire whiteboard?')) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+        colorSelect.addEventListener('change', function() {
+            strokeColor = this.value;
+            if (currentTool === 'eraser') {
+                currentTool = 'pen';
+                toolSelect.value = 'pen';
             }
         }, false);
 
-        // Zen Mode
+        // Toggles
+        btnLock.addEventListener('click', function() { isLocked = !isLocked; btnLock.className = isLocked ? 'active' : ''; }, false);
+        btnAutoHide.addEventListener('click', function() { isAutoHide = !isAutoHide; btnAutoHide.className = isAutoHide ? 'active' : ''; }, false);
+        btnMirror.addEventListener('click', function() { isMirror = !isMirror; btnMirror.className = isMirror ? 'active' : ''; }, false);
+        btnOrient.addEventListener('click', function() { toolbar.classList.toggle('vertical'); }, false);
+        btnDark.addEventListener('click', function() { document.body.classList.toggle('dark-mode'); btnDark.className = document.body.classList.contains('dark-mode') ? 'active' : ''; }, false);
+        
+        // Clear Canvas (Replaced confirm() with Custom Modal)
+        btnClear.addEventListener('click', function() { confirmModal.style.display = 'block'; }, false);
+        btnConfirmYes.addEventListener('click', function() {
+            // Temporarily remove scaling to clear absolute pixel area safely
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            oCtx.setTransform(1, 0, 0, 1, 0, 0);
+            oCtx.clearRect(0, 0, oCanvas.width, oCanvas.height);
+            
+            // Restore scale
+            var ratio = window.devicePixelRatio || 1;
+            ctx.scale(ratio, ratio);
+            oCtx.scale(ratio, ratio);
+            
+            confirmModal.style.display = 'none';
+        }, false);
+        btnConfirmNo.addEventListener('click', function() { confirmModal.style.display = 'none'; }, false);
+
+        // Text Modal Logic (Replaced prompt() with Custom Modal)
+        btnTextOk.addEventListener('click', function() {
+            var text = textInput.value;
+            if (text) {
+                ctx.font = (sliderThickness.value * 4 + 10) + 'px sans-serif';
+                ctx.fillStyle = strokeColor;
+                ctx.fillText(text, textTargetX, textTargetY);
+            }
+            textModal.style.display = 'none';
+        }, false);
+        btnTextCancel.addEventListener('click', function() { textModal.style.display = 'none'; }, false);
+
         btnZen.addEventListener('click', function() {
             toolbar.classList.toggle('hidden');
             if (toolbar.classList.contains('hidden')) {
-                btnZen.innerHTML = '&#x1F6E0;'; // Tool icon when hidden
-                btnZen.style.opacity = '0.5';
+                btnZen.innerHTML = '&#x1F6E0;'; btnZen.style.opacity = '0.5';
             } else {
-                btnZen.innerHTML = '&#x1F441;'; // Eye icon when visible
-                btnZen.style.opacity = '1';
+                btnZen.innerHTML = '&#x1F441;'; btnZen.style.opacity = '1';
             }
         }, false);
 
-        // Old iPad Save Handling (Fast & Lightweight)
+        // iPad Custom Exporter
         btnSave.addEventListener('click', function() {
             var tempCanvas = document.createElement('canvas');
-            tempCanvas.width = canvas.width;
-            tempCanvas.height = canvas.height;
+            tempCanvas.width = canvas.width; tempCanvas.height = canvas.height;
             var tCtx = tempCanvas.getContext('2d');
             
-            // Fill background based on mode
-            tCtx.fillStyle = document.body.classList.contains('dark-mode') ? '#222222' : '#ffffff';
+            var isDark = document.body.classList.contains('dark-mode');
+            
+            // Handle Background Colors for rendering
+            if(currentBg === 'blueprint') tCtx.fillStyle = '#00509E';
+            else if(currentBg === 'chalkboard') tCtx.fillStyle = '#2F4F4F';
+            else if(currentBg === 'sepia') tCtx.fillStyle = '#F4ECD8';
+            else if(currentBg === 'graph-paper') tCtx.fillStyle = '#f8fbff';
+            else if(currentBg === 'dark-grid') tCtx.fillStyle = '#111111';
+            else tCtx.fillStyle = isDark ? '#222222' : '#ffffff';
+            
             tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
             
-            // Draw actual strokes
+            // Draw background lines if active
+            var ratio = window.devicePixelRatio || 1;
+            tCtx.lineWidth = 1 * ratio;
+            tCtx.beginPath();
+            
+            var step = 40 * ratio;
+            var x = 0, y = 0;
+
+            if (currentBg === 'grid-mode' || currentBg === 'blueprint' || currentBg === 'dark-grid' || currentBg === 'graph-paper' || currentBg === 'storyboard' || currentBg === 'crosshair') {
+                if(currentBg === 'blueprint') tCtx.strokeStyle = 'rgba(255,255,255,0.3)';
+                else if(currentBg === 'graph-paper') { tCtx.strokeStyle = '#cce0ff'; step = 20 * ratio; }
+                else if(currentBg === 'dark-grid') tCtx.strokeStyle = '#333333';
+                else if(currentBg === 'storyboard') { tCtx.strokeStyle = '#333333'; step = (tempCanvas.width / 2); tCtx.lineWidth = 4 * ratio; }
+                else if(currentBg === 'crosshair') { tCtx.strokeStyle = '#dddddd'; step = 100 * ratio; }
+                else tCtx.strokeStyle = isDark ? '#3a3a3a' : '#e0e0e0';
+
+                for (x = 0; x <= tempCanvas.width; x += step) { tCtx.moveTo(x, 0); tCtx.lineTo(x, tempCanvas.height); }
+                for (y = 0; y <= tempCanvas.height; y += step) { tCtx.moveTo(0, y); tCtx.lineTo(tempCanvas.width, y); }
+                tCtx.stroke();
+            } else if (currentBg === 'lined-mode') {
+                tCtx.strokeStyle = isDark ? '#3a3a3a' : '#a0c4ff';
+                for (y = step; y <= tempCanvas.height; y += step) { tCtx.moveTo(0, y); tCtx.lineTo(tempCanvas.width, y); }
+                tCtx.stroke();
+            } else if (currentBg === 'dot-grid') {
+                tCtx.fillStyle = isDark ? '#555555' : '#cccccc';
+                step = 30 * ratio;
+                for (x = 0; x <= tempCanvas.width; x += step) {
+                    for (y = 0; y <= tempCanvas.height; y += step) {
+                        tCtx.beginPath(); tCtx.arc(x, y, 2*ratio, 0, Math.PI*2); tCtx.fill();
+                    }
+                }
+            } else if (currentBg === 'music-mode') {
+                tCtx.strokeStyle = isDark ? '#cccccc' : '#000000';
+                var groupStep = 120 * ratio; var lineStep = 10 * ratio;
+                for (var yStart = 20 * ratio; yStart <= tempCanvas.height; yStart += groupStep) {
+                    for(var l=0; l<5; l++) { y = yStart + (l * lineStep); tCtx.moveTo(0, y); tCtx.lineTo(tempCanvas.width, y); }
+                }
+                tCtx.stroke();
+            }
+
+            // Draw user strokes
             tCtx.drawImage(canvas, 0, 0);
 
-            // Generate Image Data (JPEG 0.8 is much lighter on RAM)
             var dataURL = tempCanvas.toDataURL('image/jpeg', 0.8);
             saveImg.src = dataURL;
             saveModal.style.display = 'block';
         }, false);
 
-        btnCloseModal.addEventListener('click', function() {
-            saveModal.style.display = 'none';
-        }, false);
+        btnCloseModal.addEventListener('click', function() { saveModal.style.display = 'none'; }, false);
 
     </script>
 </body>
