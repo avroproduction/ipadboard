@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- iOS PWA settings for true Fullscreen App Experience -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- Viewport settings specifically prevent pinch-zooming and scrolling on old iPads -->
+    <meta name="apple-mobile-web-app-title" content="iBoard">
+    
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxNTIgMTUyJz48cmVjdCB3aWR0aD0nMTUyJyBoZWlnaHQ9JzE1MicgZmlsbD0nIzIyMicvPjx0ZXh0IHg9Jzc2JyB5PScxMDUnIGZvbnQtZmFtaWx5PSdzYW5zLXNlcmlmJyBmb250LXdlaWdodD0nYm9sZCcgZm9udC1zaXplPSc3MCcgZmlsbD0nI2ZmZicgdGV4dC1hbmNob3I9J21pZGRsZSc+aUI8L3RleHQ+PC9zdmc+">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>iPad Digital Whiteboard</title>
+    <title>iBoard</title>
     <style>
         /* CSS Reset to prevent any scrolling or overflow */
         html, body {
@@ -73,15 +75,6 @@
             /* Responsiveness Constraints */
             max-height: 85vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
         }
-
-        /* Vertical Toolbar Mode (Fixed Responsiveness) */
-        #toolbar.vertical {
-            flex-direction: column; border-radius: 24px;
-            width: 76px; height: auto;
-            max-height: 85vh; /* Prevents going off screen */
-            overflow-y: auto; overflow-x: hidden;
-            padding: 15px 5px; /* Better spacing for scrolling */
-        }
         
         /* Hide scrollbars for a cleaner look but keep scrollability */
         #toolbar::-webkit-scrollbar { width: 0px; background: transparent; }
@@ -91,10 +84,8 @@
 
         /* Drag handle for moving toolbar */
         #drag-handle { cursor: move; font-size: 24px; color: #888; padding: 0 4px; touch-action: none; display: flex; align-items: center; }
-        #toolbar.vertical #drag-handle { -webkit-transform: rotate(90deg); transform: rotate(90deg); margin-bottom: 10px; }
 
         .tool-group { display: flex; gap: 4px; align-items: center; }
-        #toolbar.vertical .tool-group { flex-direction: column; }
 
         /* Adjusted touch targets for compact 1-line fit */
         button {
@@ -113,14 +104,9 @@
             background: #ffffff; color: #333; height: 36px; cursor: pointer; outline: none; max-width: 130px;
         }
         .dark-mode .native-select { background: #333; color: #fff; border-color: #555; }
-        #toolbar.vertical .native-select { width: 64px; padding: 4px 2px; text-overflow: ellipsis; }
 
         .divider { width: 1px; height: 28px; background: #ccc; margin: 0 3px; }
-        #toolbar.vertical .divider { width: 40px; height: 1px; margin: 4px 0; flex-shrink: 0; }
         .dark-mode .divider { background: #555; }
-
-        #thickness { width: 70px; flex-shrink: 0; }
-        #toolbar.vertical #thickness { margin: 10px 0; }
 
         /* Modals (Save, Confirm, Text) */
         .modal {
@@ -142,23 +128,18 @@
         }
     </style>
 </head>
-<body>
+<body class="lined-mode">
 
-    <!-- Main Drawing Surface -->
     <canvas id="canvas"></canvas>
 
-    <!-- Overlay Canvas for Preview Tools (Ruler, Shapes, Laser) -->
     <canvas id="overlay-canvas" style="pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
 
-    <!-- Zen Mode Toggle -->
     <button id="btn-zen" title="Toggle Toolbar">&#x1F441;</button>
 
-    <!-- Controls -->
     <div id="toolbar">
         <div id="drag-handle" title="Drag to move">&#x28FF;</div>
 
         <div class="tool-group">
-            <!-- 17 Tools Total (Updated with iPad iOS 9 Colorful Emojis) -->
             <select id="tool-select" class="native-select">
                 <option value="pen">&#x270F;&#xFE0F; Pen</option>
                 <option value="highlighter">&#x1F526; Highlight</option>
@@ -181,11 +162,22 @@
         </div>
 
         <div class="divider"></div>
-        <input type="range" id="thickness" min="1" max="30" value="4">
+        
+        <div class="tool-group">
+            <select id="thickness" class="native-select">
+                <option value="1">1px Thin</option>
+                <option value="2">2px Fine</option>
+                <option value="4" selected>4px Normal</option>
+                <option value="8">8px Thick</option>
+                <option value="14">14px Marker</option>
+                <option value="20">20px Chunky</option>
+                <option value="30">30px Huge</option>
+            </select>
+        </div>
+
         <div class="divider"></div>
 
         <div class="tool-group">
-            <!-- 33 Colors Total (Updated with iOS 9 Compatible Color Emojis) -->
             <select id="color-select" class="native-select">
                 <option value="#000000">&#x26AB; Black</option>
                 <option value="#333333">&#x1F311; Dark Gray</option>
@@ -234,11 +226,10 @@
         <div class="divider"></div>
 
         <div class="tool-group">
-            <!-- 14 Backgrounds Total -->
             <select id="bg-select" class="native-select">
                 <option value="">&#x2B1C; Blank BG</option>
                 <option value="grid-mode">&#x25A6; Grid Mode</option>
-                <option value="lined-mode">&#x1F4DD; Lined Paper</option>
+                <option value="lined-mode" selected>&#x1F4DD; Lined Paper</option>
                 <option value="music-mode">&#x1F3BC; Music Staves</option>
                 <option value="dot-grid">&#x28FF; Dot Grid</option>
                 <option value="blueprint">&#x1F4D8; Blueprint</option>
@@ -252,10 +243,12 @@
                 <option value="diagonal">&#x25E2; Diagonal</option>
             </select>
             
+            <button id="btn-gestures" class="" title="Toggle Gestures">&#x270B;</button>
             <button id="btn-lock" title="Lock Canvas">&#x1F512;</button>
-            <button id="btn-autohide" title="Auto-Hide Toolbar">&#x1F47B;</button>
+            <button id="btn-autohide" class="active" title="Auto-Hide Toolbar">&#x1F47B;</button>
             <button id="btn-mirror" title="Mirror Symmetry">&#x21C4;</button>
             <button id="btn-dark" title="Dark Mode">&#x1F311;</button>
+            <button id="btn-undo" title="Undo">&#x21B6;</button>
             <button id="btn-clear" title="Clear Canvas">&#x1F4A3;</button>
             <button id="btn-save" title="Save Image">&#x1F4BE;</button>
             <button id="btn-guide" title="Gesture Guide">&#x2753;</button>
@@ -263,8 +256,6 @@
     </div>
 
     <!-- Modals for saving, confirming, and text input -->
-    <div id="save-modal" class="modal">
-        <p>Tap and hold the image below to save it.</p>
         <img id="save-img" alt="Saved Whiteboard">
         <br>
         <button id="close-modal" class="btn-danger">Close</button>
@@ -291,10 +282,12 @@
             <li><strong>2-Finger Swipe (L/R):</strong> Cycle Backgrounds</li>
             <li><strong>2-Finger Pinch:</strong> Adjust Brush Thickness</li>
             <li><strong>3-Finger Tap:</strong> Clear Canvas</li>
+            <li><strong>3-Finger Swipe (Left):</strong> Undo</li>
             <li><strong>3-Finger Swipe Down:</strong> Save Image</li>
             <li><strong>3-Finger Swipe Up:</strong> Lock / Unlock Canvas</li>
             <li><strong>4-Finger Tap:</strong> Toggle Zen Mode (Hide Toolbar)</li>
         </ul>
+        <p style="color:#ffcc00; font-size:14px;">Toggle gestures ON/OFF anytime with the &#x270B; button!</p>
         <br>
         <button id="btn-close-guide" class="btn-primary">Got it!</button>
     </div>
@@ -314,6 +307,10 @@
         
         var rainbowHue = 0; // For rainbow brush
 
+        // Undo state
+        var undoStack = [];
+        var MAX_UNDO = 5; // Capped to 5 to protect iPad 3 RAM
+
         // Gesture state
         var gestureType = '';
         var gestureStartTime = 0;
@@ -324,10 +321,11 @@
         var maxPinchDelta = 0;
 
         // Features state
+        var gesturesEnabled = false; // Gestures OFF by default per user request
         var isLocked = false;
-        var isAutoHide = false;
+        var isAutoHide = true; // Auto-Hide ON by default
         var isMirror = false;
-        var currentBg = ''; 
+        var currentBg = 'lined-mode'; // Lined paper default
         var laserTimer = null;
 
         // UI Elements
@@ -335,10 +333,12 @@
         var bgSelect = document.getElementById('bg-select');
         var colorSelect = document.getElementById('color-select');
         
+        var btnGestures = document.getElementById('btn-gestures');
         var btnLock = document.getElementById('btn-lock');
         var btnAutoHide = document.getElementById('btn-autohide');
         var btnMirror = document.getElementById('btn-mirror');
         var btnDark = document.getElementById('btn-dark');
+        var btnUndo = document.getElementById('btn-undo');
         var btnClear = document.getElementById('btn-clear');
         var btnSave = document.getElementById('btn-save');
         var btnZen = document.getElementById('btn-zen');
@@ -469,6 +469,19 @@
             return 'rgba(' + r + ',' + g + ',' + b + ', 0.3)';
         }
 
+        // --- State Management ---
+        function saveState() {
+            if (undoStack.length >= MAX_UNDO) {
+                undoStack.shift();
+            }
+            // Use an in-memory canvas instead of base64 strings to save CPU and RAM
+            var tempCanvas = document.createElement('canvas');
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            tempCanvas.getContext('2d').drawImage(canvas, 0, 0);
+            undoStack.push(tempCanvas);
+        }
+
         // --- Drawing Logic ---
 
         function getCoordinates(e) {
@@ -486,7 +499,7 @@
 
         function startDrawing(e) {
             // Touch Gestures Detection
-            if (e.touches && e.touches.length > 1) {
+            if (gesturesEnabled && e.touches && e.touches.length > 1) {
                 isDrawing = false;
                 gestureStartTime = new Date().getTime();
                 maxPinchDelta = 0;
@@ -519,6 +532,7 @@
             var coords = getCoordinates(e);
             lastX = coords.x; lastY = coords.y;
             startX = coords.x; startY = coords.y;
+            var currentThickness = parseInt(sliderThickness.value);
             
             if (currentTool === 'text') {
                 textTargetX = coords.x;
@@ -539,12 +553,14 @@
                 return;
             }
             
+            saveState(); // Save state before continuous brushing tools
+            
             clearContextSettings(ctx);
             ctx.beginPath();
             
             // Initial Dot
             if (currentTool !== 'calig' && currentTool !== 'spray' && currentTool !== 'shadow') {
-                ctx.arc(lastX, lastY, sliderThickness.value / 2, 0, Math.PI * 2);
+                ctx.arc(lastX, lastY, currentThickness / 2, 0, Math.PI * 2);
             }
             
             if (currentTool === 'eraser') {
@@ -607,7 +623,7 @@
 
         function draw(e) {
             // Handle Pinch-to-Thickness Gesture
-            if (gestureType === '2finger' && e.touches && e.touches.length === 2) {
+            if (gesturesEnabled && gestureType === '2finger' && e.touches && e.touches.length === 2) {
                 var dx = e.touches[0].clientX - e.touches[1].clientX;
                 var dy = e.touches[0].clientY - e.touches[1].clientY;
                 var currentDist = Math.sqrt(dx*dx + dy*dy);
@@ -617,7 +633,18 @@
                 
                 if (Math.abs(delta) > 10) { // Pinch threshold
                     var newThick = startThick + (delta / 5);
-                    sliderThickness.value = Math.max(1, Math.min(30, newThick));
+                    newThick = Math.max(1, Math.min(30, newThick));
+                    
+                    // Match to closest select dropdown option
+                    var opts = sliderThickness.options;
+                    var closestIdx = 0;
+                    var minDiff = 999;
+                    for(var i=0; i<opts.length; i++) {
+                        var val = parseInt(opts[i].value);
+                        var diff = Math.abs(val - newThick);
+                        if(diff < minDiff) { minDiff = diff; closestIdx = i; }
+                    }
+                    sliderThickness.selectedIndex = closestIdx;
                 }
                 e.preventDefault();
                 return;
@@ -626,6 +653,7 @@
 
             if (!isDrawing || isLocked) return;
             var coords = getCoordinates(e);
+            var currentThickness = parseInt(sliderThickness.value);
             
             // Handle Overlay/Preview Tools
             if (['laser', 'ruler', 'dashed', 'dotted', 'arrow', 'rect', 'circle', 'triangle'].indexOf(currentTool) > -1) {
@@ -638,7 +666,7 @@
                     oCtx.stroke();
                     lastX = coords.x; lastY = coords.y;
                 } else {
-                    drawPreviewShape(oCtx, currentTool, startX, startY, coords.x, coords.y, sliderThickness.value, strokeColor);
+                    drawPreviewShape(oCtx, currentTool, startX, startY, coords.x, coords.y, currentThickness, strokeColor);
                 }
                 e.preventDefault();
                 return;
@@ -650,11 +678,11 @@
             // Continuous brushing tools
             if (currentTool === 'calig') {
                 ctx.moveTo(lastX - 2, lastY + 2); ctx.lineTo(coords.x - 2, coords.y + 2);
-                ctx.lineWidth = sliderThickness.value * 1.5;
+                ctx.lineWidth = currentThickness * 1.5;
             } else if (currentTool === 'spray') {
                 for (var i = 0; i < 10; i++) {
-                    var offsetX = (Math.random() - 0.5) * sliderThickness.value * 3;
-                    var offsetY = (Math.random() - 0.5) * sliderThickness.value * 3;
+                    var offsetX = (Math.random() - 0.5) * currentThickness * 3;
+                    var offsetY = (Math.random() - 0.5) * currentThickness * 3;
                     ctx.fillStyle = strokeColor;
                     ctx.fillRect(coords.x + offsetX, coords.y + offsetY, 2, 2);
                 }
@@ -663,12 +691,12 @@
                 return;
             } else if (currentTool === 'shadow') {
                 ctx.moveTo(lastX, lastY); ctx.lineTo(coords.x, coords.y);
-                ctx.lineWidth = sliderThickness.value;
+                ctx.lineWidth = currentThickness;
                 ctx.shadowColor = strokeColor;
-                ctx.shadowBlur = sliderThickness.value * 2;
+                ctx.shadowBlur = currentThickness * 2;
             } else {
                 ctx.moveTo(lastX, lastY); ctx.lineTo(coords.x, coords.y);
-                ctx.lineWidth = sliderThickness.value;
+                ctx.lineWidth = currentThickness;
             }
             
             // Assign active styles
@@ -707,6 +735,8 @@
         }
 
         function stopDrawing(e) {
+            var currentThickness = parseInt(sliderThickness.value);
+
             // Process Gestures on Release
             if (gestureType) {
                 var duration = new Date().getTime() - gestureStartTime;
@@ -738,6 +768,9 @@
                         } else if (dy < -80 && Math.abs(dy) > Math.abs(dx)) {
                             // 3-Finger Swipe Up
                             btnLock.click();
+                        } else if (dx < -80 && Math.abs(dx) > Math.abs(dy)) {
+                            // 3-Finger Swipe Left
+                            btnUndo.click();
                         } else if (Math.abs(dx) < 20 && Math.abs(dy) < 20) {
                             // 3-Finger Tap
                             confirmModal.style.display = 'block';
@@ -759,10 +792,11 @@
                 var endY = touch.clientY || lastY;
                 
                 oCtx.clearRect(0, 0, oCanvas.width, oCanvas.height);
-                drawPreviewShape(ctx, currentTool, startX, startY, endX, endY, sliderThickness.value, strokeColor);
+                saveState(); // Save state before committing shape tool to canvas
+                drawPreviewShape(ctx, currentTool, startX, startY, endX, endY, currentThickness, strokeColor);
                 
                 if (isMirror) {
-                    drawPreviewShape(ctx, currentTool, window.innerWidth - startX, startY, window.innerWidth - endX, endY, sliderThickness.value, strokeColor);
+                    drawPreviewShape(ctx, currentTool, window.innerWidth - startX, startY, window.innerWidth - endX, endY, currentThickness, strokeColor);
                 }
             } else if (currentTool === 'laser') {
                 laserTimer = setTimeout(function() {
@@ -803,14 +837,30 @@
         }, false);
 
         // Toggles
+        btnGestures.addEventListener('click', function() { gesturesEnabled = !gesturesEnabled; btnGestures.className = gesturesEnabled ? 'active' : ''; }, false);
         btnLock.addEventListener('click', function() { isLocked = !isLocked; btnLock.className = isLocked ? 'active' : ''; }, false);
         btnAutoHide.addEventListener('click', function() { isAutoHide = !isAutoHide; btnAutoHide.className = isAutoHide ? 'active' : ''; }, false);
         btnMirror.addEventListener('click', function() { isMirror = !isMirror; btnMirror.className = isMirror ? 'active' : ''; }, false);
         btnDark.addEventListener('click', function() { document.body.classList.toggle('dark-mode'); btnDark.className = document.body.classList.contains('dark-mode') ? 'active' : ''; }, false);
         
+        // Undo Action
+        btnUndo.addEventListener('click', function() {
+            if (undoStack.length > 0) {
+                var prevState = undoStack.pop();
+                // Temporarily bypass scaling to do a pure pixel copy
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(prevState, 0, 0);
+                // Restore scale
+                var ratio = window.devicePixelRatio || 1;
+                ctx.scale(ratio, ratio);
+            }
+        }, false);
+
         // Clear Canvas (Replaced confirm() with Custom Modal)
         btnClear.addEventListener('click', function() { confirmModal.style.display = 'block'; }, false);
         btnConfirmYes.addEventListener('click', function() {
+            saveState(); // Save state before clearing
             // Temporarily remove scaling to clear absolute pixel area safely
             ctx.setTransform(1, 0, 0, 1, 0, 0);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -830,7 +880,8 @@
         btnTextOk.addEventListener('click', function() {
             var text = textInput.value;
             if (text) {
-                ctx.font = (sliderThickness.value * 4 + 10) + 'px sans-serif';
+                saveState(); // Save state before stamping text
+                ctx.font = (parseInt(sliderThickness.value) * 4 + 10) + 'px sans-serif';
                 ctx.fillStyle = strokeColor;
                 ctx.fillText(text, textTargetX, textTargetY);
             }
@@ -851,12 +902,13 @@
             }
         }, false);
 
-        // iPad Custom Exporter
+        // iPad Save Exporter - MEMORY FIX FOR IPAD 3
         btnSave.addEventListener('click', function() {
+            // Export strictly at 1x resolution. Drawing at 2x Retina scaling 
+            // uses 50MB+ RAM for a single image, instantly crashing an old iPad.
             var tempCanvas = document.createElement('canvas');
-            // Safe assignment for export dimensions to prevent InvalidStateError
-            tempCanvas.width = Math.max(1, canvas.width); 
-            tempCanvas.height = Math.max(1, canvas.height);
+            tempCanvas.width = window.innerWidth; 
+            tempCanvas.height = window.innerHeight;
             var tCtx = tempCanvas.getContext('2d');
             
             var isDark = document.body.classList.contains('dark-mode');
@@ -871,20 +923,19 @@
             
             tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
             
-            // Draw background lines if active
-            var ratio = window.devicePixelRatio || 1;
-            tCtx.lineWidth = 1 * ratio;
+            // Draw background lines at 1x scale
+            tCtx.lineWidth = 1;
             tCtx.beginPath();
             
-            var step = 40 * ratio;
+            var step = 40;
             var x = 0, y = 0;
 
             if (currentBg === 'grid-mode' || currentBg === 'blueprint' || currentBg === 'dark-grid' || currentBg === 'graph-paper' || currentBg === 'storyboard' || currentBg === 'crosshair') {
                 if(currentBg === 'blueprint') tCtx.strokeStyle = 'rgba(255,255,255,0.3)';
-                else if(currentBg === 'graph-paper') { tCtx.strokeStyle = '#cce0ff'; step = 20 * ratio; }
+                else if(currentBg === 'graph-paper') { tCtx.strokeStyle = '#cce0ff'; step = 20; }
                 else if(currentBg === 'dark-grid') tCtx.strokeStyle = '#333333';
-                else if(currentBg === 'storyboard') { tCtx.strokeStyle = '#333333'; step = (tempCanvas.width / 2); tCtx.lineWidth = 4 * ratio; }
-                else if(currentBg === 'crosshair') { tCtx.strokeStyle = '#dddddd'; step = 100 * ratio; }
+                else if(currentBg === 'storyboard') { tCtx.strokeStyle = '#333333'; step = (tempCanvas.width / 2); tCtx.lineWidth = 4; }
+                else if(currentBg === 'crosshair') { tCtx.strokeStyle = '#dddddd'; step = 100; }
                 else tCtx.strokeStyle = isDark ? '#3a3a3a' : '#e0e0e0';
 
                 for (x = 0; x <= tempCanvas.width; x += step) { tCtx.moveTo(x, 0); tCtx.lineTo(x, tempCanvas.height); }
@@ -896,29 +947,30 @@
                 tCtx.stroke();
             } else if (currentBg === 'dot-grid') {
                 tCtx.fillStyle = isDark ? '#555555' : '#cccccc';
-                step = 30 * ratio;
+                step = 30;
                 for (x = 0; x <= tempCanvas.width; x += step) {
                     for (y = 0; y <= tempCanvas.height; y += step) {
-                        tCtx.beginPath(); tCtx.arc(x, y, 2*ratio, 0, Math.PI*2); tCtx.fill();
+                        tCtx.beginPath(); tCtx.arc(x, y, 2, 0, Math.PI*2); tCtx.fill();
                     }
                 }
             } else if (currentBg === 'music-mode') {
                 tCtx.strokeStyle = isDark ? '#cccccc' : '#000000';
-                var groupStep = 120 * ratio; var lineStep = 10 * ratio;
-                for (var yStart = 20 * ratio; yStart <= tempCanvas.height; yStart += groupStep) {
+                var groupStep = 120; var lineStep = 10;
+                for (var yStart = 20; yStart <= tempCanvas.height; yStart += groupStep) {
                     for(var l=0; l<5; l++) { y = yStart + (l * lineStep); tCtx.moveTo(0, y); tCtx.lineTo(tempCanvas.width, y); }
                 }
                 tCtx.stroke();
             }
 
-            // Safe drawing of user strokes inside try-catch to prevent state errors
+            // Safe drawing of user strokes, perfectly scaling down Retina to 1x to bypass iPad RAM limitations
             try {
-                tCtx.drawImage(canvas, 0, 0);
+                tCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, tempCanvas.width, tempCanvas.height);
             } catch (e) {
                 console.warn("Could not save drawn strokes to export image", e);
             }
 
-            var dataURL = tempCanvas.toDataURL('image/jpeg', 0.8);
+            // Use lower JPEG compression (0.7) to keep string size extremely small
+            var dataURL = tempCanvas.toDataURL('image/jpeg', 0.7);
             saveImg.src = dataURL;
             saveModal.style.display = 'block';
         }, false);
